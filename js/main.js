@@ -1,11 +1,11 @@
 
 function getRandomIntInclusive(min, max) {
-  if (min < 0 || max < 0 || typeof min !== Number || typeof max !== Number) {
-    return NaN;
+  if (typeof min == "number" && typeof max == "number" && Math.sign(min) == 1 && Math.sign(max) == 1) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min);
   }
-  min = Number.isInteger(min);
-  max = Number.isInteger(max);
-  return Math.floor(Math.random() * (max - min + 1) + min);
+  return NaN;
 }
 getRandomIntInclusive();
 
