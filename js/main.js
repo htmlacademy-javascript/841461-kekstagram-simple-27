@@ -1,6 +1,6 @@
 
 function getRandomIntInclusive(min, max) {
-  if (min < 0 || max < 0 || min == '' || max == '' || min == undefined || max == undefined || min == Infinity || max == -Infinity) {
+  if (min < 0 || max < 0 || typeof min !== Number || typeof max !== Number) {
     return NaN;
   }
   min = Number.isInteger(min);
