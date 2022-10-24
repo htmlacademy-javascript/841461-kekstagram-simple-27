@@ -39,8 +39,8 @@ const getPhotosWithUniqueIndex = (array) => {
         id: uniQueId[i],
         url: `photos/${uniQueId[i]}.jpg`,
         description: descriptions[getRandomIntInclusive(0, descriptions.length - 1)],
-        likesQuantity: getRandomIntInclusive(LIKESQUENTITYMIN, LIKESQUENTITYMAX),
-        commentsQuantity: getRandomIntInclusive(COMMENTSQUANTITYMIN, COMMENTSQUANTITYMAX),
+        likes: getRandomIntInclusive(LIKESQUENTITYMIN, LIKESQUENTITYMAX),
+        comments: getRandomIntInclusive(COMMENTSQUANTITYMIN, COMMENTSQUANTITYMAX),
       });
     }
     return photos;
