@@ -1,17 +1,16 @@
-
 import {
-  descriptions,
   VALIDCOMMENTLENGTH,
 } from './variables.js';
 
-import {
-  getRandomIntInclusive,
-  isStringLengthValid
-} from './util.js';
+const modal = document.querySelector('body');
+const commentContainer = modal.querySelector('.text__description');
 
-const commentValid = isStringLengthValid(descriptions[getRandomIntInclusive(0, descriptions.length - 1)], VALIDCOMMENTLENGTH);
+const isStringLengthValid = (currentComment) => {
+  currentComment = commentContainer.textContent;
+  return currentComment.length <= VALIDCOMMENTLENGTH;
+};
 
 export {
-  commentValid,
+  isStringLengthValid,
 };
 
