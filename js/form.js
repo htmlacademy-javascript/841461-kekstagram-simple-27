@@ -3,8 +3,7 @@ import {
 } from './util.js';
 
 import {
-  getSize,
-  removeSize,
+  initScaleHandlers,
 } from './image-editor.js';
 
 import {
@@ -29,7 +28,7 @@ const effectList = form.querySelector('.effects__list');
 const openPictureDialog = () => {
   modal.classList.add('modal-open');
   modalBackground.classList.remove('hidden');
-  getSize();
+  initScaleHandlers();
 
   document.addEventListener('keydown', onPopupEscKeydown);
 };
@@ -37,7 +36,6 @@ const openPictureDialog = () => {
 const closePictureDialog = () => {
   modal.classList.remove('modal-open');
   modalBackground.classList.add('hidden');
-  removeSize();
   pictureUploadInput.value = '';
   document.removeEventListener('keydown', onPopupEscKeydown);
 };
