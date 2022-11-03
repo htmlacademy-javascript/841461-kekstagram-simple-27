@@ -9,7 +9,8 @@ const descriptions = ['Водоём на плоскогорье', 'На тёпл
 
 const SIZE_STEP = 25;
 const CEIL_WIDTH = 100;
-const EFFECTS = [];
+
+const effects = ['preview--none', 'preview--chrome', 'preview--sepia', 'preview--marvin', 'preview--phobos', 'preview--heat'];
 
 export {
   LIKESQUENTITYMIN,
@@ -21,5 +22,5 @@ export {
   descriptions,
   SIZE_STEP,
   CEIL_WIDTH,
-  EFFECTS
+  effects
 };

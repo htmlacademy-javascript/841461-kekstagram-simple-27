@@ -4,6 +4,7 @@ import {
 
 import {
   initScaleHandlers,
+  initEffectHandler,
 } from './image-editor.js';
 
 import {
@@ -23,12 +24,11 @@ const imageDialog = userDialog.querySelector('.img-upload__preview');
 const image = imageDialog.querySelector('img');
 const scaleResult = userDialog.querySelector('.scale__control--value');
 
-const effectList = form.querySelector('.effects__list');
-
 const openPictureDialog = () => {
   modal.classList.add('modal-open');
   modalBackground.classList.remove('hidden');
   initScaleHandlers();
+  initEffectHandler();
 
   document.addEventListener('keydown', onPopupEscKeydown);
 };
@@ -67,7 +67,7 @@ form.addEventListener('submit', (evt) => {
 
 export {
   modal,
+  userDialog,
   image,
   scaleResult,
-  effectList,
 };
