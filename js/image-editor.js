@@ -62,9 +62,9 @@ const resetImageCurrentEffects = () => {
 
 const resetImageCurrentScale = () => {
 
-  if (image.style.transform === `scale(${carrentWidth / 100})`) {
-    image.style = '';
-  }
+  carrentWidth = CEIL_WIDTH;
+  image.style.transform = `scale(${carrentWidth / 100})`;
+
 };
 
 const initImageEffects = () => {
