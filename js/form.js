@@ -6,6 +6,7 @@ import {
 import {
   initImageEffects,
   resetImageCurrentEffects,
+  resetImageCurrentScale,
   destroyImageEffectsListeners,
 } from './image-editor.js';
 
@@ -37,8 +38,9 @@ const openModal = () => {
 const closeModal = () => {
   modal.classList.remove('modal-open');
   modalBackground.classList.add('hidden');
-  resetImageCurrentEffects();
   destroyImageEffectsListeners();
+  resetImageCurrentScale();
+  resetImageCurrentEffects();
 
   document.removeEventListener('keydown', onPopupEscKeydown);
 };

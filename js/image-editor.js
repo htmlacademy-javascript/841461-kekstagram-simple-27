@@ -50,17 +50,22 @@ const onEffectChoise = (evt) => {
   }
 };
 
-const resetImageCurrentEffects = (evt) => {
+const resetImageCurrentEffects = () => {
 
   for (let i = 0; i < effects.length; i += 1) {
     const effectClassPart = effects[i];
-    if (evt.target.value === effectClassPart) {
+    if (image.className === `effects__preview--${effectClassPart}`) {
       image.classList.remove(`effects__preview--${effectClassPart}`);
     }
   }
-  image.style.transform = carrentWidth;
 };
 
+const resetImageCurrentScale = () => {
+
+  if (image.style.transform === `scale(${carrentWidth / 100})`) {
+    image.style = '';
+  }
+};
 
 const initImageEffects = () => {
 
@@ -83,4 +88,5 @@ export {
   initImageEffects,
   destroyImageEffectsListeners,
   resetImageCurrentEffects,
+  resetImageCurrentScale,
 };
