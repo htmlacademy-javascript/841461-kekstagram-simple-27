@@ -1,10 +1,12 @@
+
 import {
   isEscapeKey,
 } from './util.js';
 
 import {
-  initScaleHandlers,
-  initEffectHandler,
+  initImageEffects,
+  resetImageCurrentEffects,
+  destroyImageEffectsListeners,
 } from './image-editor.js';
 
 import {
@@ -24,37 +26,38 @@ const imageDialog = userDialog.querySelector('.img-upload__preview');
 const image = imageDialog.querySelector('img');
 const scaleResult = userDialog.querySelector('.scale__control--value');
 
-const openPictureDialog = () => {
+const openModal = () => {
   modal.classList.add('modal-open');
   modalBackground.classList.remove('hidden');
-  initScaleHandlers();
-  initEffectHandler();
+  initImageEffects();
 
   document.addEventListener('keydown', onPopupEscKeydown);
 };
 
-const closePictureDialog = () => {
+const closeModal = () => {
   modal.classList.remove('modal-open');
   modalBackground.classList.add('hidden');
-  pictureUploadInput.value = '';
+  resetImageCurrentEffects();
+  destroyImageEffectsListeners();
+
   document.removeEventListener('keydown', onPopupEscKeydown);
 };
 
 pictureUploadInput.addEventListener('change', () => {
-
-  openPictureDialog();
+  openModal();
 });
 
 resetButton.addEventListener('click', () => {
 
-  closePictureDialog();
+  closeModal();
 });
 
 function onPopupEscKeydown(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
 
-    closePictureDialog();
+    closeModal();
+    destroyImageEffectsListeners();
   }
 }
 
