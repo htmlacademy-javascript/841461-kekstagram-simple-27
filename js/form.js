@@ -18,8 +18,7 @@ const modal = document.querySelector('body');
 const form = modal.querySelector('.img-upload__form');
 const pictureUploadInput = modal.querySelector('.img-upload__input');
 const modalBackground = modal.querySelector('.img-upload__overlay');
-const pictureDialog = modalBackground.querySelector('.img-upload__wrapper');
-const userDialog = pictureDialog.querySelector('.img-upload__preview-container');
+const userDialog = modal.querySelector('.img-upload__preview-container');
 const resetButton = userDialog.querySelector('.img-upload__cancel');
 //const submitButton = modal.querySelector('.img-upload__submit');
 
