@@ -47,7 +47,4 @@ const getPhotosWithUniqueIndex = (array) => {
   }
 };
 
-export {
-  indexes,
-  getPhotosWithUniqueIndex,
-};
+getPhotosWithUniqueIndex(indexes);

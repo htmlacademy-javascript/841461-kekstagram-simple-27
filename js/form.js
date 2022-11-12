@@ -1,12 +1,12 @@
 
 import {
   isEscapeKey,
+  isEnterKey,
 } from './util.js';
 
 import {
   initImageEffects,
-  resetImageCurrentEffects,
-  resetImageCurrentScale,
+  resetFieldsValue,
   destroyImageEffectsListeners,
 } from './image-editor.js';
 
@@ -14,17 +14,21 @@ import {
   isStringLengthValid,
 } from './validity.js';
 
+import {
+  sendData,
+} from './api.js';
+
+import {
+  createSuccesMessageUpload,
+  createErrorMessageUpload,
+} from './alerts-render.js';
+
 const modal = document.querySelector('body');
 const form = modal.querySelector('.img-upload__form');
 const pictureUploadInput = modal.querySelector('.img-upload__input');
 const modalBackground = modal.querySelector('.img-upload__overlay');
-const userDialog = modal.querySelector('.img-upload__preview-container');
-const resetButton = userDialog.querySelector('.img-upload__cancel');
-//const submitButton = modal.querySelector('.img-upload__submit');
-
-const imageDialog = userDialog.querySelector('.img-upload__preview');
-const image = imageDialog.querySelector('img');
-const scaleResult = userDialog.querySelector('.scale__control--value');
+const resetButton = modal.querySelector('.img-upload__cancel');
+const submitButton = modal.querySelector('.img-upload__submit');
 
 const openModal = () => {
   modal.classList.add('modal-open');
@@ -38,8 +42,7 @@ const closeModal = () => {
   modal.classList.remove('modal-open');
   modalBackground.classList.add('hidden');
   destroyImageEffectsListeners();
-  resetImageCurrentScale();
-  resetImageCurrentEffects();
+  resetFieldsValue();
 
   document.removeEventListener('keydown', onPopupEscKeydown);
 };
@@ -49,8 +52,13 @@ pictureUploadInput.addEventListener('change', () => {
 });
 
 resetButton.addEventListener('click', () => {
-
   closeModal();
+});
+
+submitButton.addEventListener('keydown', (evt) => {
+  if (isEnterKey(evt)) {
+    closeModal();
+  }
 });
 
 function onPopupEscKeydown(evt) {
@@ -58,20 +66,43 @@ function onPopupEscKeydown(evt) {
     evt.preventDefault();
 
     closeModal();
-    destroyImageEffectsListeners();
   }
 }
 
-form.addEventListener('submit', (evt) => {
-  evt.preventDefault();
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Сохраняю...';
+};
 
-  isStringLengthValid();
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Сохранить';
+};
 
-});
+const setUserFormSubmit = (onSuccess) => {
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const isValid = isStringLengthValid();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(
+        () => {
+          onSuccess();
+          createSuccesMessageUpload();
+          unblockSubmitButton();
+        },
+        () => {
+          createErrorMessageUpload();
+          unblockSubmitButton();
+        },
+        new FormData(evt.target),
+      );
+    }
+  });
+};
 
 export {
-  modal,
-  userDialog,
-  image,
-  scaleResult,
+  openModal,
+  closeModal,
+  setUserFormSubmit,
 };
