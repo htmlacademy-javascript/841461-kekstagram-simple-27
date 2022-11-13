@@ -161,6 +161,7 @@ const resetFieldsValue = () => {
   imgUploadInput.value = '';
   inputComment.value = '';
   image.style.transform = '';
+  scaleResult.value = `${CEIL_WIDTH}%`;
   sliderDialog.style.display = 'none';
   image.style.filter = '';
 };
