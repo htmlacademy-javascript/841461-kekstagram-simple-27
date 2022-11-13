@@ -55,8 +55,10 @@ resetButton.addEventListener('click', () => {
   closeModal();
 });
 
+
 submitButton.addEventListener('keydown', (evt) => {
   if (isEnterKey(evt)) {
+    evt.preventDefault();
     closeModal();
   }
 });
