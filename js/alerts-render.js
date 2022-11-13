@@ -12,9 +12,6 @@ const createSuccesMessageUpload = () => {
   messageTitle.textContent = 'Изображение успешно загружено';
   const button = messageContainer.querySelector('.success__button');
   button.textContent = 'Круто!';
-  messageContainer.appendChild(messageTitle);
-  messageContainer.appendChild(button);
-  messageElement.appendChild(messageContainer);
   alertSuccesFragment.appendChild(messageElement);
   modal.insertAdjacentHTML('beforeend', alertSuccesFragment);
   button.addEventListener('click', () => {
@@ -29,9 +26,6 @@ const createErrorMessageUpload = () => {
   messageTitle.textContent = 'Ошибка загрузки файла';
   const button = messageContainer.querySelector('.success__button');
   button.textContent = 'Попробовать ещё раз';
-  messageContainer.appendChild(messageTitle);
-  messageContainer.appendChild(button);
-  messageElement.appendChild(messageContainer);
   alertErrorFragment.appendChild(messageElement);
   modal.insertAdjacentHTML('beforeend', alertErrorFragment);
   button.addEventListener('click', () => {
