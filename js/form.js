@@ -64,7 +64,6 @@ submitButton.addEventListener('keydown', (evt) => {
 function onPopupEscKeydown(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-
     closeModal();
   }
 }
