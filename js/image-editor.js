@@ -6,24 +6,23 @@ import {
   effects,
 } from './variables.js';
 
-import {
-  scaleResult,
-} from './form.js';
-
-const modal = document.querySelector('body');
-const userDialog = modal.querySelector('.img-upload__preview-container');
+const imgUploadInput = document.querySelector('.img-upload__input');
+const userDialog = document.querySelector('.img-upload__preview-container');
 const imageDialog = userDialog.querySelector('.img-upload__preview');
 const image = imageDialog.querySelector('img');
 const scaleFloorInput = userDialog.querySelector('.scale__control--smaller');
 const scaleCeilInput = userDialog.querySelector('.scale__control--bigger');
+const scaleResult = userDialog.querySelector('.scale__control--value');
 const effectList = document.querySelector('.effects__list');
 const effectListInputs = effectList.querySelectorAll('.effects__radio');
 const sliderDialog = document.querySelector('.img-upload__effect-level');
 const sliderElement = document.querySelector('.effect-level__slider');
 const valueElement = document.querySelector('.effect-level__value');
+const inputComment = document.querySelector('.text__description');
 let carrentWidth = CEIL_WIDTH;
 valueElement.value = CEIL_FILTER_VALUE;
 sliderDialog.style.display = 'none';
+
 const onScaleFloorInput = () => {
 
   if (carrentWidth > SIZE_STEP || carrentWidth === CEIL_WIDTH) {
@@ -83,10 +82,12 @@ const onEffectChoise = (evt) => {
     const effectClassPart = `effects__preview--${effects[i]}`;
     if (evt.target.matches(effects[i])) {
       image.classList.add(effectClassPart);
-    } else {
-      image.classList.remove(effectClassPart);
     }
   }
+  onSliderUse(evt);
+};
+
+function onSliderUse(evt) {
   if (evt.target.value === 'chrome') {
     sliderDialog.style.display = 'block';
     sliderElement.noUiSlider.updateOptions({
@@ -154,23 +155,15 @@ const onEffectChoise = (evt) => {
     sliderDialog.style.display = 'none';
     image.style.removeProperty('filter');
   }
-};
+}
 
-const resetImageCurrentEffects = () => {
-
-  for (let i = 0; i < effects.length; i += 1) {
-    const effectClassPart = effects[i];
-    if (image.className === `effects__preview--${effectClassPart}`) {
-      image.classList.remove(`effects__preview--${effectClassPart}`);
-    }
-  }
-};
-
-const resetImageCurrentScale = () => {
-
-  carrentWidth = CEIL_WIDTH;
-  image.style.transform = `scale(${carrentWidth / 100})`;
-
+const resetFieldsValue = () => {
+  imgUploadInput.value = '';
+  inputComment.value = '';
+  image.style.transform = '';
+  scaleResult.value = `${CEIL_WIDTH}%`;
+  sliderDialog.style.display = 'none';
+  image.style.filter = '';
 };
 
 const initImageEffects = () => {
@@ -190,6 +183,5 @@ const destroyImageEffectsListeners = () => {
 export {
   initImageEffects,
   destroyImageEffectsListeners,
-  resetImageCurrentEffects,
-  resetImageCurrentScale,
+  resetFieldsValue,
 };

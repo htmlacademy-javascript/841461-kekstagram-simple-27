@@ -1,20 +1,14 @@
 
-import {
-  indexes,
-  getPhotosWithUniqueIndex,
-} from './data.js';
-
 const pictureContainer = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 
-const pictureSorces = getPhotosWithUniqueIndex(indexes);
+const pictureListFragment = document.createDocumentFragment();
 
-const createPictureList = () => {
-  const pictureListFragment = document.createDocumentFragment();
+const createPictureList = (pictures) => {
 
-  pictureSorces.forEach(({url, description, likes, comments}) => {
+  pictures.forEach(({url, likes, comments, description}) => {
     const pictureElement = pictureTemplate.cloneNode(true);
     const pictureImg = pictureElement.querySelector('.picture__img');
     pictureImg.src = url;
@@ -31,11 +25,6 @@ const createPictureList = () => {
   pictureContainer.appendChild(pictureListFragment);
 };
 
-/*const destroyPictureList = () => {
-  pictureContainer.innerHTML = '';
-};*/
-
 export {
   createPictureList,
-  //destroyPictureList
 };

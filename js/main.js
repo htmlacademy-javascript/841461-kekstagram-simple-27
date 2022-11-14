@@ -1,9 +1,18 @@
-
 import {
   createPictureList,
-  //destroyPictureList
 } from './picture-render.js';
-import './form.js';
 
-createPictureList();
+import {
+  closeModal,
+  setUserFormSubmit,
+} from './form.js';
 
+import {
+  getData,
+} from './api.js';
+
+getData((pictures) => {
+  createPictureList(pictures);
+});
+
+setUserFormSubmit(closeModal);
