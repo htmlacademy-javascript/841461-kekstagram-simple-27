@@ -1,16 +1,5 @@
 
 import {
-  isEscapeKey,
-  isEnterKey,
-} from './util.js';
-
-import {
-  initImageEffects,
-  resetFieldsValue,
-  destroyImageEffectsListeners,
-} from './image-editor.js';
-
-import {
   isStringLengthValid,
 } from './validity.js';
 
@@ -25,50 +14,7 @@ import {
 
 const modal = document.querySelector('body');
 const form = modal.querySelector('.img-upload__form');
-const pictureUploadInput = modal.querySelector('.img-upload__input');
-const modalBackground = modal.querySelector('.img-upload__overlay');
-const resetButton = modal.querySelector('.img-upload__cancel');
 const submitButton = modal.querySelector('.img-upload__submit');
-
-const openModal = () => {
-  modal.classList.add('modal-open');
-  modalBackground.classList.remove('hidden');
-  initImageEffects();
-
-  document.addEventListener('keydown', onPopupEscKeydown);
-};
-
-const closeModal = () => {
-  modal.classList.remove('modal-open');
-  modalBackground.classList.add('hidden');
-  destroyImageEffectsListeners();
-  resetFieldsValue();
-
-  document.removeEventListener('keydown', onPopupEscKeydown);
-};
-
-pictureUploadInput.addEventListener('change', () => {
-  openModal();
-});
-
-resetButton.addEventListener('click', () => {
-  closeModal();
-});
-
-
-submitButton.addEventListener('keydown', (evt) => {
-  if (isEnterKey(evt)) {
-    evt.preventDefault();
-    closeModal();
-  }
-});
-
-function onPopupEscKeydown(evt) {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    closeModal();
-  }
-}
 
 const blockSubmitButton = () => {
   submitButton.disabled = true;
@@ -80,7 +26,7 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Сохранить';
 };
 
-const setUserFormSubmit = (onSuccess) => {
+const setUserFormSubmit = () => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const isValid = isStringLengthValid();
@@ -88,7 +34,6 @@ const setUserFormSubmit = (onSuccess) => {
       blockSubmitButton();
       sendData(
         () => {
-          onSuccess();
           createSuccesMessageUpload();
           unblockSubmitButton();
         },
@@ -103,7 +48,5 @@ const setUserFormSubmit = (onSuccess) => {
 };
 
 export {
-  openModal,
-  closeModal,
   setUserFormSubmit,
 };

@@ -6,19 +6,27 @@ import {
   effects,
 } from './variables.js';
 
-const imgUploadInput = document.querySelector('.img-upload__input');
-const userDialog = document.querySelector('.img-upload__preview-container');
+import {
+  isEscapeKey,
+  isEnterKey,
+} from './util.js';
+
+const modal = document.querySelector('body');
+const modalBackground = modal.querySelector('.img-upload__overlay');
+const imgUploadInput = modal.querySelector('.img-upload__input');
+const resetButton = modal.querySelector('.img-upload__cancel');
+const userDialog = modal.querySelector('.img-upload__preview-container');
 const imageDialog = userDialog.querySelector('.img-upload__preview');
 const image = imageDialog.querySelector('img');
 const scaleFloorInput = userDialog.querySelector('.scale__control--smaller');
 const scaleCeilInput = userDialog.querySelector('.scale__control--bigger');
 const scaleResult = userDialog.querySelector('.scale__control--value');
-const effectList = document.querySelector('.effects__list');
+const effectList = modal.querySelector('.effects__list');
 const effectListInputs = effectList.querySelectorAll('.effects__radio');
-const sliderDialog = document.querySelector('.img-upload__effect-level');
-const sliderElement = document.querySelector('.effect-level__slider');
-const valueElement = document.querySelector('.effect-level__value');
-const inputComment = document.querySelector('.text__description');
+const sliderDialog = modal.querySelector('.img-upload__effect-level');
+const sliderElement = modal.querySelector('.effect-level__slider');
+const valueElement = modal.querySelector('.effect-level__value');
+const inputComment = modal.querySelector('.text__description');
 let carrentWidth = CEIL_WIDTH;
 valueElement.value = CEIL_FILTER_VALUE;
 sliderDialog.style.display = 'none';
@@ -34,7 +42,7 @@ const onScaleFloorInput = () => {
 
 const onScaleCeilInput = () => {
 
-  if ((carrentWidth + SIZE_STEP) <= CEIL_WIDTH || carrentWidth === SIZE_STEP) {
+  if (carrentWidth < CEIL_WIDTH || carrentWidth === SIZE_STEP) {
     carrentWidth = carrentWidth + SIZE_STEP;
     scaleResult.value = `${carrentWidth}%`;
     image.style.transform = `scale(${carrentWidth / 100})`;
@@ -160,8 +168,8 @@ function onSliderUse(evt) {
 const resetFieldsValue = () => {
   imgUploadInput.value = '';
   inputComment.value = '';
-  image.style.transform = '';
-  scaleResult.value = `${CEIL_WIDTH}%`;
+  image.style.transform = 'none';
+  carrentWidth = CEIL_WIDTH;
   sliderDialog.style.display = 'none';
   image.style.filter = '';
 };
@@ -180,8 +188,51 @@ const destroyImageEffectsListeners = () => {
   effectList.removeEventListener('change', onEffectChoise);
 };
 
+const openModal = () => {
+  modal.classList.add('modal-open');
+  modalBackground.classList.remove('hidden');
+  initImageEffects();
+
+  document.addEventListener('keydown', onPopupEscKeydown);
+};
+
+const closeModal = () => {
+  modal.classList.remove('modal-open');
+  modalBackground.classList.add('hidden');
+  destroyImageEffectsListeners();
+  resetFieldsValue();
+
+  document.removeEventListener('keydown', onPopupEscKeydown);
+};
+
+function onPopupEscKeydown(evt) {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeModal();
+  }
+}
+
+imgUploadInput.addEventListener('change', () => {
+  openModal();
+});
+
+resetButton.addEventListener('click', () => {
+  closeModal();
+});
+
+imgUploadInput.addEventListener('keydown', (evt) => {
+  if (isEnterKey(evt)) {
+    openModal();
+  }
+});
+
+resetButton.addEventListener('keydown', (evt) => {
+  if (isEnterKey(evt)) {
+    closeModal();
+  }
+});
+
 export {
-  initImageEffects,
-  destroyImageEffectsListeners,
-  resetFieldsValue,
+  openModal,
+  closeModal,
 };

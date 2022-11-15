@@ -4,6 +4,9 @@ import {
 
 import {
   closeModal,
+} from './image-editor.js';
+
+import {
   setUserFormSubmit,
 } from './form.js';
 
@@ -15,4 +18,4 @@ getData((pictures) => {
   createPictureList(pictures);
 });
 
-setUserFormSubmit(closeModal);
+setUserFormSubmit(closeModal());

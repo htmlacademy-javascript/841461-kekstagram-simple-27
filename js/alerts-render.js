@@ -15,6 +15,7 @@ const createSuccesMessageUpload = () => {
   const messageContainer = messageElement.querySelector('.success__inner');
   document.addEventListener('keydown', onPopupEnterKeydown);
   document.addEventListener('keydown', onPopupEscKeydown);
+  document.addEventListener('click', onOverlayClick);
   messageElement.querySelector('.success__button').addEventListener('click', onHideAlertButtonClick);
   messageElement.appendChild(messageContainer);
   alertSuccessFragment.appendChild(messageElement);
@@ -27,6 +28,7 @@ const createErrorMessageUpload = () => {
   const messageContainer = messageElement.querySelector('.error__inner');
   document.addEventListener('keydown', onPopupEnterKeydown);
   document.addEventListener('keydown', onPopupEscKeydown);
+  document.addEventListener('click', onOverlayClick);
   messageElement.querySelector('.error__button').addEventListener('click', onHideAlertButtonClick);
   messageElement.appendChild(messageContainer);
   alertErrorFragment.appendChild(messageElement);
@@ -52,12 +54,17 @@ function onPopupEscKeydown(evt) {
   }
 }
 
+function onOverlayClick() {
+  hideAlert();
+}
+
 function hideAlert() {
   const alertMessage = document.querySelector('.success') || document.querySelector('.error');
   modal.removeChild(alertMessage);
   modal.style.overflow = 'auto';
   document.removeEventListener('keydown', onPopupEnterKeydown);
-  document.removeEventListener('keydown', onPopupEscKeydown);
+  document.removeEventListener('keydown', onPopupEnterKeydown);
+  document.removeEventListener('click', onOverlayClick);
 }
 
 export {
