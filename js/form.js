@@ -1,20 +1,71 @@
 
 import {
+  isEscapeKey,
+  isEnterKey,
+} from './util.js';
+
+import {
   isStringLengthValid,
 } from './validity.js';
 
 import {
-  sendData,
-} from './api.js';
-
-import {
-  createSuccesMessageUpload,
-  createErrorMessageUpload,
-} from './alerts-render.js';
+  initImageEffects,
+  resetFieldsValue,
+  destroyImageEffectsListeners,
+} from './image-editor.js';
 
 const modal = document.querySelector('body');
 const form = modal.querySelector('.img-upload__form');
+const modalBackground = modal.querySelector('.img-upload__overlay');
+const imgUploadInput = modal.querySelector('.img-upload__input');
 const submitButton = modal.querySelector('.img-upload__submit');
+const resetButton = modal.querySelector('.img-upload__cancel');
+
+const openModal = () => {
+  modal.classList.add('modal-open');
+  modalBackground.classList.remove('hidden');
+  modal.style.overflow = 'hidden';
+  initImageEffects();
+
+  document.addEventListener('keydown', onPopupEscKeydown);
+};
+
+const closeModal = () => {
+  modal.classList.remove('modal-open');
+  modalBackground.classList.add('hidden');
+  modal.style.overflow = 'auto';
+  destroyImageEffectsListeners();
+  resetFieldsValue();
+
+  document.removeEventListener('keydown', onPopupEscKeydown);
+};
+
+function onPopupEscKeydown(evt) {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeModal();
+  }
+}
+
+imgUploadInput.addEventListener('change', () => {
+  openModal();
+});
+
+resetButton.addEventListener('click', () => {
+  closeModal();
+});
+
+imgUploadInput.addEventListener('keydown', (evt) => {
+  if (isEnterKey(evt)) {
+    openModal();
+  }
+});
+
+resetButton.addEventListener('keydown', (evt) => {
+  if (isEnterKey(evt)) {
+    closeModal();
+  }
+});
 
 const blockSubmitButton = () => {
   submitButton.disabled = true;
@@ -26,27 +77,20 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Сохранить';
 };
 
-const setUserFormSubmit = () => {
-  form.addEventListener('submit', (evt) => {
+const setUserFormSubmit = (cb) => {
+  form.addEventListener('submit', async (evt) => {
     evt.preventDefault();
     const isValid = isStringLengthValid();
     if (isValid) {
       blockSubmitButton();
-      sendData(
-        () => {
-          createSuccesMessageUpload();
-          unblockSubmitButton();
-        },
-        () => {
-          createErrorMessageUpload();
-          unblockSubmitButton();
-        },
-        new FormData(evt.target),
-      );
+      await cb(new FormData(evt.target));
+      unblockSubmitButton();
     }
   });
 };
 
+
 export {
+  closeModal,
   setUserFormSubmit,
 };

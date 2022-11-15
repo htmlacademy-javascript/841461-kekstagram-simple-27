@@ -4,7 +4,12 @@ import {
 
 import {
   closeModal,
-} from './image-editor.js';
+} from './form.js';
+
+import {
+  createSuccesMessageUpload,
+  createErrorMessageUpload,
+} from './alerts-render.js';
 
 import {
   setUserFormSubmit,
@@ -12,10 +17,18 @@ import {
 
 import {
   getData,
+  sendData,
 } from './api.js';
 
 getData((pictures) => {
   createPictureList(pictures);
 });
 
-setUserFormSubmit(closeModal());
+setUserFormSubmit(async (data) => {
+  await sendData(onSendDataSucces, createErrorMessageUpload, data);
+});
+
+function onSendDataSucces() {
+  createSuccesMessageUpload();
+  closeModal();
+}

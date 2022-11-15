@@ -6,15 +6,8 @@ import {
   effects,
 } from './variables.js';
 
-import {
-  isEscapeKey,
-  isEnterKey,
-} from './util.js';
-
 const modal = document.querySelector('body');
-const modalBackground = modal.querySelector('.img-upload__overlay');
 const imgUploadInput = modal.querySelector('.img-upload__input');
-const resetButton = modal.querySelector('.img-upload__cancel');
 const userDialog = modal.querySelector('.img-upload__preview-container');
 const imageDialog = userDialog.querySelector('.img-upload__preview');
 const image = imageDialog.querySelector('img');
@@ -170,6 +163,7 @@ const resetFieldsValue = () => {
   inputComment.value = '';
   image.style.transform = 'none';
   carrentWidth = CEIL_WIDTH;
+  scaleResult.value = `${CEIL_WIDTH}%`;
   sliderDialog.style.display = 'none';
   image.style.filter = '';
 };
@@ -188,51 +182,8 @@ const destroyImageEffectsListeners = () => {
   effectList.removeEventListener('change', onEffectChoise);
 };
 
-const openModal = () => {
-  modal.classList.add('modal-open');
-  modalBackground.classList.remove('hidden');
-  initImageEffects();
-
-  document.addEventListener('keydown', onPopupEscKeydown);
-};
-
-const closeModal = () => {
-  modal.classList.remove('modal-open');
-  modalBackground.classList.add('hidden');
-  destroyImageEffectsListeners();
-  resetFieldsValue();
-
-  document.removeEventListener('keydown', onPopupEscKeydown);
-};
-
-function onPopupEscKeydown(evt) {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    closeModal();
-  }
-}
-
-imgUploadInput.addEventListener('change', () => {
-  openModal();
-});
-
-resetButton.addEventListener('click', () => {
-  closeModal();
-});
-
-imgUploadInput.addEventListener('keydown', (evt) => {
-  if (isEnterKey(evt)) {
-    openModal();
-  }
-});
-
-resetButton.addEventListener('keydown', (evt) => {
-  if (isEnterKey(evt)) {
-    closeModal();
-  }
-});
-
 export {
-  openModal,
-  closeModal,
+  initImageEffects,
+  resetFieldsValue,
+  destroyImageEffectsListeners,
 };

@@ -33,7 +33,6 @@ const createErrorMessageUpload = () => {
   messageElement.appendChild(messageContainer);
   alertErrorFragment.appendChild(messageElement);
   modal.append(alertErrorFragment);
-  modal.style.overflow = 'hidden';
 };
 
 function onHideAlertButtonClick() {
@@ -61,7 +60,6 @@ function onOverlayClick() {
 function hideAlert() {
   const alertMessage = document.querySelector('.success') || document.querySelector('.error');
   modal.removeChild(alertMessage);
-  modal.style.overflow = 'auto';
   document.removeEventListener('keydown', onPopupEnterKeydown);
   document.removeEventListener('keydown', onPopupEnterKeydown);
   document.removeEventListener('click', onOverlayClick);
