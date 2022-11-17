@@ -20,6 +20,8 @@ import {
   sendData,
 } from './api.js';
 
+import './file.js';
+
 getData((pictures) => {
   createPictureList(pictures);
 });

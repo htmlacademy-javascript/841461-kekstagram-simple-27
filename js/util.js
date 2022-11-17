@@ -11,8 +11,6 @@ const getRandomIntInclusive = (min, max) => {
   return NaN;
 };
 
-const isStringLengthValid = (currentComment, maxComentLength) => currentComment.length <= maxComentLength;
-
 const isEnterKey = (evt) => evt.key === 'Enter';
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
@@ -43,6 +41,5 @@ export {
   getRandomIntInclusive,
   isEnterKey,
   isEscapeKey,
-  isStringLengthValid,
   showAlert,
 };

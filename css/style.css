@@ -1408,3 +1408,26 @@ main {
 .hidden {
   display: none;
 }
+
+.text__label {
+  position: relative;
+}
+
+.text__error-text {
+  position: absolute;
+  top: 17px;
+  right: 3px;
+  padding: 6px 15px;
+  text-align: center;
+  text-transform: none;
+  color: red;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 2px solid lightgray;
+  border-radius: 4px;
+}
+
+.placeholder-container__item {
+  position: relative;
+  max-width: 600px;
+  max-height: 600px;
+}

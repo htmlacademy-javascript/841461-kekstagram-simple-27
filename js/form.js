@@ -5,10 +5,6 @@ import {
 } from './util.js';
 
 import {
-  isStringLengthValid,
-} from './validity.js';
-
-import {
   initImageEffects,
   resetFieldsValue,
   destroyImageEffectsListeners,
@@ -20,6 +16,13 @@ const modalBackground = modal.querySelector('.img-upload__overlay');
 const imgUploadInput = modal.querySelector('.img-upload__input');
 const submitButton = modal.querySelector('.img-upload__submit');
 const resetButton = modal.querySelector('.img-upload__cancel');
+
+
+const pristine = new Pristine(form, {
+  classTo: 'text__label',
+  errorTextParent: 'text__label',
+  errorTextClass: 'text__error-text',
+});
 
 const openModal = () => {
   modal.classList.add('modal-open');
@@ -80,7 +83,8 @@ const unblockSubmitButton = () => {
 const setUserFormSubmit = (cb) => {
   form.addEventListener('submit', async (evt) => {
     evt.preventDefault();
-    const isValid = isStringLengthValid();
+    //const isValid = isStringLengthValid();
+    const isValid = pristine.validate();
     if (isValid) {
       blockSubmitButton();
       await cb(new FormData(evt.target));

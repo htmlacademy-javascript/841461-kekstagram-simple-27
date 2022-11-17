@@ -42,8 +42,8 @@
                   </fieldset>
 
                   <!-- Предварительный просмотр изображения -->
-                  <div class="img-upload__preview">
-                    <img src="img/upload-default-image.jpg" alt="Предварительный просмотр фотографии">
+                  <div class="img-upload__preview placeholder-container">
+                    <img class="placeholder-container__item" src="img/upload-default-image.jpg" accept="image/png, image/jpeg" alt="Предварительный просмотр фотографии">
                   </div>
 
                   <!-- Изменение глубины эффекта, накладываемого на изображение -->
@@ -106,7 +106,9 @@
 
                 <!-- Добавление комментария к изображению -->
                 <fieldset class="img-upload__text text">
-                    <textarea class="text__description" name="description" placeholder="Ваш комментарий..." required></textarea>
+                  <label class="text__label">
+                    <textarea class="text__description" name="description" placeholder="Ваш комментарий..." data-pristine-minlength="20" data-pristine-maxlength="140" data-pristine-required-message="Обязательное поле" data-pristine-minlength-message="Минимальная длина 20 символов" data-pristine-maxlength-message="Максимальная длина 140 символов" required></textarea>
+                  </label>
                 </fieldset>
 
                 <!-- Кнопка для отправки данных на сервер -->
@@ -165,6 +167,7 @@
       </div>
     </section>
   </template>
+<script src="vendor/pristine/pristine.min.js"></script>
 <script src="vendor/nouislider/nouislider.js"></script>
 <script src="js/main.js" type="module"></script>
 </body>
