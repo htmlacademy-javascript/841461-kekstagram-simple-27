@@ -20,6 +20,7 @@ const sliderDialog = modal.querySelector('.img-upload__effect-level');
 const sliderElement = modal.querySelector('.effect-level__slider');
 const valueElement = modal.querySelector('.effect-level__value');
 const inputComment = modal.querySelector('.text__description');
+
 let carrentWidth = CEIL_WIDTH;
 valueElement.value = CEIL_FILTER_VALUE;
 sliderDialog.style.display = 'none';

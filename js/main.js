@@ -1,17 +1,14 @@
 import {
   createPictureList,
-  compareElements,
+  showFilters,
+  setSortByRandom,
+  setSortByComments,
+  setSortByDefault,
 } from './picture-render.js';
 
 import {
   closeModal,
 } from './form.js';
-
-import {
-  showFilters,
-  setfilterComments,
-  setfilterRandom,
-} from './filter.js';
 
 import {
   createSuccesMessageUpload,
@@ -29,15 +26,12 @@ import {
 
 import './file.js';
 
-import {
-  getRandomArrayElement,
-} from './util.js';
-
 getData( async (pictures) => {
-  //createPictureList(pictures);
+  createPictureList(pictures);
   showFilters();
-  setfilterComments(() => compareElements(createPictureList(pictures)));
-  setfilterRandom(() => getRandomArrayElement(createPictureList(pictures)).slice(0, 10));
+  setSortByRandom(pictures);
+  setSortByComments(pictures);
+  setSortByDefault(pictures);
 });
 
 setUserFormSubmit(async (data) => {

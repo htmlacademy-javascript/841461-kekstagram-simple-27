@@ -1,9 +1,24 @@
 
+import {
+  RANDOM_FILTERED_QUANTITY,
+} from './variables.js';
+
+import {
+  getRandomArrayElement,
+} from './util.js';
 
 const pictureContainer = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
+
+
+const filterSection = document.querySelector('.img-filters');
+const filterForm = document.querySelector('.img-filters__form');
+const filterButtons = filterForm.querySelectorAll('.img-filters__button');
+const filterButtonDefault = filterForm.querySelector('#filter-default');
+const filterButtonRandom = filterForm.querySelector('#filter-random');
+const filterButtonDiscussed = filterForm.querySelector('#filter-discussed');
 
 /*const getCommentsArray = () => {
   const pictureComments = document.querySelectorAll('.picture__comments');
@@ -16,8 +31,11 @@ const pictureTemplate = document.querySelector('#picture')
   return elements.sort((a, b) => b - a);
 };*/
 
-const compareElements = (elements) => {
-  elements.sort((a, b) => b - a);
+
+const comparePictures = (a, b) => b.comments - a.comments;
+
+const sliceRandomPictures = (pictures) => {
+  getRandomArrayElement(pictures).slice(0, RANDOM_FILTERED_QUANTITY);
 };
 
 const pictureListFragment = document.createDocumentFragment();
@@ -41,7 +59,48 @@ const createPictureList = (pictures) => {
   pictureContainer.appendChild(pictureListFragment);
 };
 
+const showFilters = () => {
+  filterSection.classList.remove('img-filters--inactive');
+
+  filterButtons.forEach((filterButton) => {
+    filterButton.addEventListener('click', handleBtnsClick);
+  });
+};
+
+function handleBtnsClick() {
+  toggleButtons.call(this);
+}
+
+function toggleButtons() {
+  filterButtons.forEach((filterButton) => filterButton.classList.remove('img-filters__button--active'));
+  this.classList.add('img-filters__button--active');
+}
+
+const setSortByRandom = () => {
+
+  if (filterButtonRandom) {
+    sliceRandomPictures(createPictureList());
+  }
+};
+
+const setSortByComments = () => {
+
+  if (filterButtonDiscussed) {
+    comparePictures(createPictureList());
+  }
+};
+
+const setSortByDefault = () => {
+  if (filterButtonDefault) {
+    createPictureList();
+  }
+
+};
+
 export {
   createPictureList,
-  compareElements,
+  showFilters,
+  setSortByRandom,
+  setSortByComments,
+  setSortByDefault,
 };

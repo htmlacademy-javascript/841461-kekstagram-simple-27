@@ -5,7 +5,7 @@ import {
 
 const imageDialog = document.querySelector('.img-upload__preview');
 const imageInput = document.querySelector('[type=file]');
-const imagePlaceholder = document.querySelector('.placeholder-container__item');
+const imagePlaceholder = document.querySelector('img');
 
 imageInput.addEventListener('change', () => {
   const file = imageInput.files[0];
