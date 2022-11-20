@@ -3,6 +3,7 @@ import {
   IMAGE_TYPES,
 } from './variables.js';
 
+const imageDialog = document.querySelector('.img-upload__preview');
 const imageInput = document.querySelector('[type=file]');
 const imagePlaceholder = document.querySelector('.placeholder-container__item');
 
@@ -14,6 +15,7 @@ imageInput.addEventListener('change', () => {
   if (matches) {
     imagePlaceholder.src = URL.createObjectURL(file);
     imagePlaceholder.classList.add('placeholder-container__item');
+    imageDialog.append(imagePlaceholder);
   }
 });
 

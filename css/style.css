@@ -1428,6 +1428,6 @@ main {
 
 .placeholder-container__item {
   position: relative;
-  max-width: 600px;
-  max-height: 600px;
+  max-width: 100%;
+  height: auto;
 }

@@ -17,7 +17,6 @@ const imgUploadInput = modal.querySelector('.img-upload__input');
 const submitButton = modal.querySelector('.img-upload__submit');
 const resetButton = modal.querySelector('.img-upload__cancel');
 
-
 const pristine = new Pristine(form, {
   classTo: 'text__label',
   errorTextParent: 'text__label',
@@ -83,7 +82,6 @@ const unblockSubmitButton = () => {
 const setUserFormSubmit = (cb) => {
   form.addEventListener('submit', async (evt) => {
     evt.preventDefault();
-    //const isValid = isStringLengthValid();
     const isValid = pristine.validate();
     if (isValid) {
       blockSubmitButton();
@@ -92,7 +90,6 @@ const setUserFormSubmit = (cb) => {
     }
   });
 };
-
 
 export {
   closeModal,
