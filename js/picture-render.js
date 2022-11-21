@@ -1,8 +1,4 @@
 
-import {
-  clearPictures,
-} from './filter.js';
-
 const pictureContainer = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture')
   .content
@@ -11,7 +7,6 @@ const pictureTemplate = document.querySelector('#picture')
 const pictureListFragment = document.createDocumentFragment();
 
 const createPictureList = (pictures) => {
-  clearPictures();
   pictures.forEach(({url, likes, comments, description}) => {
     const pictureElement = pictureTemplate.cloneNode(true);
     const pictureImg = pictureElement.querySelector('.picture__img');
