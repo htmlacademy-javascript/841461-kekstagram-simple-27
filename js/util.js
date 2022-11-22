@@ -2,17 +2,6 @@ import {
   ALERT_SHOW_TIME,
 } from './variables.js';
 
-const getRandomIntInclusive = (min, max) => {
-  if (typeof min === 'number' && typeof max === 'number' && min >= 0 && max >= 0) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
-  return NaN;
-};
-
-const isStringLengthValid = (currentComment, maxComentLength) => currentComment.length <= maxComentLength;
-
 const isEnterKey = (evt) => evt.key === 'Enter';
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
@@ -39,10 +28,53 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
+const getRandomPositiveInteger = (a, b) => {
+  if (a < 0 || b < 0) {
+    return NaN;
+  }
+  const lower = Math.ceil(Math.min(a, b));
+  const upper = Math.floor(Math.max(a, b));
+  const result = Math.random() * (upper - lower + 1) + lower;
+  return Math.floor(result);
+};
+
+const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
+
+const getRandomArray = (array, counter) => {
+  if (array.length <= counter) {
+    return array;
+  }
+  let result = [];
+  while (result.length !== counter) {
+    result.push(getRandomArrayElement(array));
+    result = Array.from(new Set(result));
+  }
+  return result;
+};
+
+const comparePictures = (itemA, itemB) => {
+  const commentA = itemA.comments;
+  const commentB = itemB.comments;
+
+  return commentB - commentA;
+};
+
+const sortedByCommentsQuentity = (items) => items.slice().sort(comparePictures);
+
+function debounce (callback, timeoutDelay) {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
 export {
-  getRandomIntInclusive,
   isEnterKey,
   isEscapeKey,
-  isStringLengthValid,
   showAlert,
+  getRandomArray,
+  sortedByCommentsQuentity,
+  debounce,
 };

@@ -1,6 +1,3 @@
-import {
-  createPictureList,
-} from './picture-render.js';
 
 import {
   closeModal,
@@ -8,11 +5,27 @@ import {
 } from './form.js';
 
 import {
-  getData,
+  createSuccesMessageUpload,
+  createErrorMessageUpload,
+} from './alerts-render.js';
+
+import {
+  sendData,
 } from './api.js';
 
-getData((pictures) => {
-  createPictureList(pictures);
+import {
+  showFilters,
+} from './filter.js';
+
+import './file.js';
+
+showFilters();
+
+setUserFormSubmit(async (data) => {
+  await sendData(onSendDataSucces, createErrorMessageUpload, data);
 });
 
-setUserFormSubmit(closeModal);
+function onSendDataSucces() {
+  createSuccesMessageUpload();
+  closeModal();
+}

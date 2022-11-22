@@ -6,19 +6,21 @@ import {
   effects,
 } from './variables.js';
 
-const imgUploadInput = document.querySelector('.img-upload__input');
-const userDialog = document.querySelector('.img-upload__preview-container');
+const modal = document.querySelector('body');
+const imgUploadInput = modal.querySelector('.img-upload__input');
+const userDialog = modal.querySelector('.img-upload__preview-container');
 const imageDialog = userDialog.querySelector('.img-upload__preview');
 const image = imageDialog.querySelector('img');
 const scaleFloorInput = userDialog.querySelector('.scale__control--smaller');
 const scaleCeilInput = userDialog.querySelector('.scale__control--bigger');
 const scaleResult = userDialog.querySelector('.scale__control--value');
-const effectList = document.querySelector('.effects__list');
+const effectList = modal.querySelector('.effects__list');
 const effectListInputs = effectList.querySelectorAll('.effects__radio');
-const sliderDialog = document.querySelector('.img-upload__effect-level');
-const sliderElement = document.querySelector('.effect-level__slider');
-const valueElement = document.querySelector('.effect-level__value');
-const inputComment = document.querySelector('.text__description');
+const sliderDialog = modal.querySelector('.img-upload__effect-level');
+const sliderElement = modal.querySelector('.effect-level__slider');
+const valueElement = modal.querySelector('.effect-level__value');
+const inputComment = modal.querySelector('.text__description');
+
 let carrentWidth = CEIL_WIDTH;
 valueElement.value = CEIL_FILTER_VALUE;
 sliderDialog.style.display = 'none';
@@ -34,7 +36,7 @@ const onScaleFloorInput = () => {
 
 const onScaleCeilInput = () => {
 
-  if ((carrentWidth + SIZE_STEP) <= CEIL_WIDTH || carrentWidth === SIZE_STEP) {
+  if (carrentWidth < CEIL_WIDTH || carrentWidth === SIZE_STEP) {
     carrentWidth = carrentWidth + SIZE_STEP;
     scaleResult.value = `${carrentWidth}%`;
     image.style.transform = `scale(${carrentWidth / 100})`;
@@ -160,7 +162,8 @@ function onSliderUse(evt) {
 const resetFieldsValue = () => {
   imgUploadInput.value = '';
   inputComment.value = '';
-  image.style.transform = '';
+  image.style.transform = 'none';
+  carrentWidth = CEIL_WIDTH;
   scaleResult.value = `${CEIL_WIDTH}%`;
   sliderDialog.style.display = 'none';
   image.style.filter = '';
@@ -182,6 +185,6 @@ const destroyImageEffectsListeners = () => {
 
 export {
   initImageEffects,
-  destroyImageEffectsListeners,
   resetFieldsValue,
+  destroyImageEffectsListeners,
 };

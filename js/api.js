@@ -3,48 +3,34 @@ import {
   showAlert,
 } from './util.js';
 
-import {
-  createSuccesMessageUpload,
-  createErrorMessageUpload,
-} from './alerts-render.js';
-
-const getData = (onSuccess) => {
-  fetch('https://27.javascript.pages.academy/kekstagram-simple/data')
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error(`${response.status} ${response.statusText}`);
-    })
-    .then((pictures) => {
-      onSuccess(pictures);
-    })
-    .catch(() => {
-      showAlert('Что-то пошло не так! Перезагрузите страницу');
-    });
+const getData = async (onSuccess, onFail) => {
+  try {
+    const response = await fetch('https://27.javascript.pages.academy/kekstagram-simple/data');
+    if (!response.ok) {
+      throw new Error('Не удалось загрузить фотографии');
+    }
+    const pictures = await response.json();
+    onSuccess(pictures);
+  } catch (error) {
+    onFail(showAlert('Не удалось загрузить фотографии. Перезагрузите страницу'));
+  }
 };
 
+const sendData = async (onSuccess, onFail, body) => {
+  try {
+    const response = await fetch('https://27.javascript.pages.academy/kekstagram-simple',
+      {
+        method: 'POST',
+        body,
+      });
 
-const sendData = (onSuccess, onFail, body) => {
-  fetch('https://27.javascript.pages.academy/kekstagram-simple',
-    {
-      method: 'POST',
-      body,
-    },
-  )
-    .then((response) => {
-      if (response.ok) {
-        onSuccess();
-        createSuccesMessageUpload();
-      } else {
-        onFail();
-        createErrorMessageUpload();
-      }
-    })
-    .catch(() => {
-      onFail();
-      createErrorMessageUpload();
-    });
+    if (!response.ok) {
+      throw new Error ('Не удалось отправить форму. Попробуйте ещё раз.');
+    }
+    onSuccess();
+  } catch(error) {
+    onFail(error.message);
+  }
 };
 
 export {
