@@ -612,11 +612,11 @@ main {
 }
 
 .effects__preview {
-  display: block;
+  display: flex;
+  align-items: center;
   width: 70px;
   height: 70px;
   margin-bottom: 5px;
-
   overflow: hidden;
 
   font-size: 0;
@@ -668,6 +668,10 @@ main {
           filter: brightness(3);
 }
 
+.effects__preview--space {
+  -webkit-filter: hue-rotate(90deg);
+          filter: hue-rotate(90deg);
+}
 
 /**
   * Блок добавления хэштегов и комментария к изображению
@@ -1430,4 +1434,12 @@ main {
   position: relative;
   max-width: 100%;
   height: auto;
+}
+
+.effects__img {
+  position: relative;
+  max-width: 100%;
+  height: auto;
+  overflow: hidden;
+
 }

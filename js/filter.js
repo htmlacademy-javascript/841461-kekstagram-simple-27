@@ -5,7 +5,7 @@ import {
 
 import {
   getRandomArray,
-  sortedByCommentsQuentity,
+  sortByCommentsQuantity,
   debounce,
 } from './util.js';
 
@@ -50,7 +50,7 @@ function handleFilterOnClick(evt) {
         pictures = getRandomArray(pictures, RANDOM_FILTERED_QUANTITY);
         break;
       case 'filter-discussed':
-        pictures = sortedByCommentsQuentity(pictures);
+        pictures = sortByCommentsQuantity(pictures);
         break;
     }
     createPictureList(pictures);

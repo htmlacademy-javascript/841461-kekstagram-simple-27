@@ -59,22 +59,22 @@ const comparePictures = (itemA, itemB) => {
   return commentB - commentA;
 };
 
-const sortedByCommentsQuentity = (items) => items.slice().sort(comparePictures);
+const sortByCommentsQuantity = (items) => items.slice().sort(comparePictures);
 
-function debounce (callback, timeoutDelay) {
+const debounce = (callback, timeoutDelay) => {
   let timeoutId;
 
   return (...rest) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
-}
+};
 
 export {
   isEnterKey,
   isEscapeKey,
   showAlert,
   getRandomArray,
-  sortedByCommentsQuentity,
+  sortByCommentsQuantity,
   debounce,
 };

@@ -3,7 +3,7 @@ import {
   showAlert,
 } from './util.js';
 
-const getData = async (onSuccess, onFail) => {
+const getData = async (onSuccess) => {
   try {
     const response = await fetch('https://27.javascript.pages.academy/kekstagram-simple/data');
     if (!response.ok) {
@@ -12,7 +12,7 @@ const getData = async (onSuccess, onFail) => {
     const pictures = await response.json();
     onSuccess(pictures);
   } catch (error) {
-    onFail(showAlert('Не удалось загрузить фотографии. Перезагрузите страницу'));
+    showAlert('Не удалось загрузить фотографии. Перезагрузите страницу');
   }
 };
 

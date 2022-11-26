@@ -5,13 +5,14 @@ import {
 } from './util.js';
 
 import {
-  initImageEffects,
-  resetFieldsValue,
-  destroyImageEffectsListeners,
+  initImageListeners,
+  resetEffectsValue,
+  resetOtherFieldsValue,
+  destroyImageListeners,
 } from './image-editor.js';
 
 const modal = document.querySelector('body');
-const form = modal.querySelector('.img-upload__form');
+const form = document.querySelector('.img-upload__form');
 const modalBackground = modal.querySelector('.img-upload__overlay');
 const imgUploadInput = modal.querySelector('.img-upload__input');
 const submitButton = modal.querySelector('.img-upload__submit');
@@ -27,7 +28,7 @@ const openModal = () => {
   modal.classList.add('modal-open');
   modalBackground.classList.remove('hidden');
   modal.style.overflow = 'hidden';
-  initImageEffects();
+  initImageListeners();
 
   document.addEventListener('keydown', onPopupEscKeydown);
 };
@@ -36,8 +37,9 @@ const closeModal = () => {
   modal.classList.remove('modal-open');
   modalBackground.classList.add('hidden');
   modal.style.overflow = 'auto';
-  destroyImageEffectsListeners();
-  resetFieldsValue();
+  resetEffectsValue();
+  resetOtherFieldsValue();
+  destroyImageListeners();
 
   document.removeEventListener('keydown', onPopupEscKeydown);
 };
