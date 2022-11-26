@@ -2,28 +2,24 @@
 import {
   SIZE_STEP,
   CEIL_WIDTH,
-  CEIL_FILTER_VALUE,
-  effects,
+  EFFECTS,
+  DEFAULT_EFFECT,
 } from './variables.js';
 
-const modal = document.querySelector('body');
-const imgUploadInput = modal.querySelector('.img-upload__input');
-const userDialog = modal.querySelector('.img-upload__preview-container');
+const form = document.querySelector('.img-upload__form');
+const userDialog = form.querySelector('.img-upload__preview-container');
 const imageDialog = userDialog.querySelector('.img-upload__preview');
 const image = imageDialog.querySelector('img');
 const scaleFloorInput = userDialog.querySelector('.scale__control--smaller');
 const scaleCeilInput = userDialog.querySelector('.scale__control--bigger');
 const scaleResult = userDialog.querySelector('.scale__control--value');
-const effectList = modal.querySelector('.effects__list');
-const effectListInputs = effectList.querySelectorAll('.effects__radio');
-const sliderDialog = modal.querySelector('.img-upload__effect-level');
-const sliderElement = modal.querySelector('.effect-level__slider');
-const valueElement = modal.querySelector('.effect-level__value');
-const inputComment = modal.querySelector('.text__description');
+const sliderElement = form.querySelector('.effect-level__slider');
+const valueElement = form.querySelector('.effect-level__value');
+const inputComment = form.querySelector('.text__description');
+const defaultInput = form.querySelector('#effect-none');
 
 let carrentWidth = CEIL_WIDTH;
-valueElement.value = CEIL_FILTER_VALUE;
-sliderDialog.style.display = 'none';
+let currentEffect = DEFAULT_EFFECT;
 
 const onScaleFloorInput = () => {
 
@@ -43,148 +39,89 @@ const onScaleCeilInput = () => {
   }
 };
 
-noUiSlider.create(sliderElement, {
-  range: {
-    min: 0,
-    max: 100,
-  },
-  start: 100,
-  step: 1,
-  connect: 'lower',
-  format: {
-    to: function (value) {
-      if (Number.isInteger(value)) {
-        return value.toFixed(0);
-      }
-      return value.toFixed(1);
-    },
-    from: function (value) {
-      return parseFloat(value);
-    },
-  },
-});
+const isDefault = () => currentEffect === DEFAULT_EFFECT;
 
-sliderElement.noUiSlider.on('update', () => {
-  valueElement.value = sliderElement.noUiSlider.get();
-  if (effectListInputs[1].checked) {
-    image.style.filter = `grayscale(${valueElement.value})`;
-  } else if (effectListInputs[2].checked) {
-    image.style.filter = `sepia(${valueElement.value})`;
-  } else if (effectListInputs[3].checked) {
-    image.style.filter = `invert(${valueElement.value}%)`;
-  } else if (effectListInputs[4].checked) {
-    image.style.filter = `blur(${valueElement.value}px)`;
-  } else if (effectListInputs[5].checked) {
-    image.style.filter = `brightness(${valueElement.value})`;
-  }
-});
+const updateSlider = () => {
+  sliderElement.classList.remove('hidden');
+  sliderElement.noUiSlider.updateOptions({
+    range: {
+      min: currentEffect.min,
+      max: currentEffect.max,
+    },
+    step: currentEffect.step,
+    start: currentEffect.max,
+  });
 
-const onEffectChoise = (evt) => {
-  for (let i = 0; i < effects.length; i += 1) {
-    const effectClassPart = `effects__preview--${effects[i]}`;
-    if (evt.target.matches(effects[i])) {
-      image.classList.add(effectClassPart);
-    }
+  if (isDefault()) {
+    sliderElement.classList.add('hidden');
   }
-  onSliderUse(evt);
 };
 
-function onSliderUse(evt) {
-  if (evt.target.value === 'chrome') {
-    sliderDialog.style.display = 'block';
-    sliderElement.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 1
-      },
-      start: 1,
-      step: 0.1
-    });
+const onFormChange = (evt) => {
+  if (!evt.target.classList.contains('effects__radio')) {
+    return;
   }
-  if (evt.target.value === 'sepia') {
-    sliderDialog.style.display = 'block';
-    if (evt.target.checked) {
-      sliderElement.noUiSlider.updateOptions({
-        range: {
-          min: 0,
-          max: 1
-        },
-        start: 1,
-        step: 0.1
-      });
-    }
-  }
-  if (evt.target.value === 'marvin') {
-    sliderDialog.style.display = 'block';
-    if (evt.target.checked) {
-      sliderElement.noUiSlider.updateOptions({
-        range: {
-          min: 0,
-          max: 100
-        },
-        start: 100,
-        step: 1,
-      });
-    }
-  }
-  if (evt.target.value === 'phobos') {
-    sliderDialog.style.display = 'block';
-    if (evt.target.checked) {
-      sliderElement.noUiSlider.updateOptions({
-        range: {
-          min: 0,
-          max: 3
-        },
-        start: 3,
-        step: 0.1,
-      });
-    }
-  }
-  if (evt.target.value === 'heat') {
-    sliderDialog.style.display = 'block';
-    if (evt.target.checked) {
-      sliderElement.noUiSlider.updateOptions({
-        range: {
-          min: 1,
-          max: 3
-        },
-        start: 3,
-        step: 0.1
-      });
-    }
-  }
-  if (evt.target.value === 'none') {
-    sliderDialog.style.display = 'none';
-    image.style.removeProperty('filter');
-  }
-}
+  currentEffect = EFFECTS.find((effect) => effect.name === evt.target.value);
+  updateSlider();
+};
 
-const resetFieldsValue = () => {
-  imgUploadInput.value = '';
+const onSliderUpdate = () => {
+  image.style.filter = 'none';
+  image.className = '';
+  valueElement.value = '';
+
+  if(isDefault()) {
+    return;
+  }
+  const sliderValue = sliderElement.noUiSlider.get();
+  image.style.filter = `${currentEffect.style}(${sliderValue}${currentEffect.unit})`;
+  image.classList.add(`effects__preview--${currentEffect.name}`);
+  valueElement.value = sliderValue;
+};
+
+const resetEffectsValue = () => {
+  currentEffect = DEFAULT_EFFECT;
+  updateSlider();
+};
+
+noUiSlider.create(sliderElement, {
+  range: {
+    min: DEFAULT_EFFECT.min,
+    max: DEFAULT_EFFECT.max,
+  },
+  start: DEFAULT_EFFECT.max,
+  step: DEFAULT_EFFECT.step,
+  connect: 'lower',
+});
+updateSlider();
+
+const resetOtherFieldsValue = () => {
+  defaultInput.checked = true;
   inputComment.value = '';
   image.style.transform = 'none';
   carrentWidth = CEIL_WIDTH;
   scaleResult.value = `${CEIL_WIDTH}%`;
-  sliderDialog.style.display = 'none';
-  image.style.filter = '';
 };
 
-const initImageEffects = () => {
+const initImageListeners = () => {
 
   scaleCeilInput.addEventListener('click', onScaleCeilInput);
   scaleFloorInput.addEventListener('click', onScaleFloorInput);
-  effectList.addEventListener('change', onEffectChoise);
+  form.addEventListener('change', onFormChange);
+  sliderElement.noUiSlider.on('update', onSliderUpdate);
 };
 
-const destroyImageEffectsListeners = () => {
+const destroyImageListeners = () => {
 
   scaleCeilInput.removeEventListener('click', onScaleCeilInput);
   scaleFloorInput.removeEventListener('click', onScaleFloorInput);
-  effectList.removeEventListener('change', onEffectChoise);
+  form.removeEventListener('change', onFormChange);
+  sliderElement.noUiSlider.off('update', onSliderUpdate);
 };
 
 export {
-  initImageEffects,
-  resetFieldsValue,
-  destroyImageEffectsListeners,
+  initImageListeners,
+  resetOtherFieldsValue,
+  resetEffectsValue,
+  destroyImageListeners,
 };

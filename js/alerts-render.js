@@ -61,7 +61,7 @@ function hideAlert() {
   const alertMessage = document.querySelector('.success') || document.querySelector('.error');
   modal.removeChild(alertMessage);
   document.removeEventListener('keydown', onPopupEnterKeydown);
-  document.removeEventListener('keydown', onPopupEnterKeydown);
+  document.removeEventListener('keydown', onPopupEscKeydown);
   document.removeEventListener('click', onOverlayClick);
 }
 

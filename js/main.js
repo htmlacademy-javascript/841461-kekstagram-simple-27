@@ -21,11 +21,11 @@ import './file.js';
 
 showFilters();
 
+const onSendDataSucces = () => {
+  createSuccesMessageUpload();
+  closeModal();
+};
+
 setUserFormSubmit(async (data) => {
   await sendData(onSendDataSucces, createErrorMessageUpload, data);
 });
-
-function onSendDataSucces() {
-  createSuccesMessageUpload();
-  closeModal();
-}
